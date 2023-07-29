@@ -167,10 +167,13 @@ class MainWindow(QMainWindow):
         self.comboBox.addItem(self.lineEdit_2.text())
 
     def loading_preset(self):
-        if self.comboBox.currentText() != 0:
-            shutil.rmtree(self.dirlist)
-            shutil.copytree(f"file/prebilds/{self.comboBox.currentText()}", self.dirlist, dirs_exist_ok=True)
-
+        if len(self.comboBox.currentText()) != 0:
+            if os.path.isdir(self.dirlist):
+                shutil.rmtree(self.dirlist)
+            try:
+                shutil.copytree(f"file/prebilds/{self.comboBox.currentText()}", self.dirlist, dirs_exist_ok=True)
+            except BaseException as a:
+                print(a)
     def clear_all(self):
         self.asgard_1_treck = ""
         self.asgard_2_treck = ""
