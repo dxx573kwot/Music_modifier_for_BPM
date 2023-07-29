@@ -1,14 +1,11 @@
 import sys
-import time
-
-from PyQt5.QtWidgets import *
-
-"""from PyQt5.QtWidgets import QApplication
-from PyQt5.QtWidgets import QMainWindow, QLabel, QLineEdit, QPushButton"""
-from PyQt5 import uic, QtWidgets
 import webbrowser
 import os
 import shutil
+from PyQt5.QtWidgets import *
+from PyQt5 import uic, QtWidgets
+
+
 
 
 class MainWindow(QMainWindow):
@@ -36,6 +33,7 @@ class MainWindow(QMainWindow):
         self.pushButton_4.clicked.connect(self.loading_trek)
         self.pushButton_5.clicked.connect(self.save_preset)
         self.pushButton_6.clicked.connect(self.loading_preset)
+        self.pushButton_7.clicked.connect(self.delete)
         self.clear.clicked.connect(self.clear_all)
         for i in os.listdir("file/prebilds"):
             self.comboBox.addItem(i)
@@ -155,12 +153,18 @@ class MainWindow(QMainWindow):
         except BaseException as a:
             print(a)
 
+    def delete(self):
+        shutil.rmtree(f"file/prebilds/{self.comboBox.currentText()}")
+        self.comboBox.clear()
+        for i in os.listdir("file/prebilds"):
+            self.comboBox.addItem(i)
     def save_preset(self):
         try:
             shutil.rmtree(self.dirlist)
         except BaseException:
             pass
         shutil.copytree("file/CustomSoundtrack", f"file/prebilds/{self.lineEdit_2.text()}", dirs_exist_ok=True)
+        self.comboBox.addItem(self.lineEdit_2.text())
 
     def loading_preset(self):
         if self.comboBox.currentText() != 0:
