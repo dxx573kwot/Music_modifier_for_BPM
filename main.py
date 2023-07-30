@@ -17,7 +17,8 @@ class MainWindow(QMainWindow):
             self.dirlist = f.readline()
             self.lineEdit.setText(self.dirlist)
         self.pushButton.clicked.connect(self.dirlist_searcher)
-        self.pushButton_2.clicked.connect(lambda: webbrowser.open('http://www.google.com'))
+        self.pushButton_2.clicked.connect(
+            lambda: webbrowser.open('https://steamcommunity.com/sharedfiles/filedetails/?id=3012114088'))
         self.pushButton_3.clicked.connect(
             lambda: webbrowser.open('https://github.com/dxx573kwot/Music_modifier_for_BPM'))
         self.Asgard_1.clicked.connect(self.asgard_1)
@@ -37,7 +38,8 @@ class MainWindow(QMainWindow):
         for i in os.listdir("file/prebilds"):
             self.comboBox.addItem(i)
         self.pushButton_8.clicked.connect(self.load_out_preset)
-#        self.pushButton_9.clicked.connect(self.save_out_preset)
+
+    #        self.pushButton_9.clicked.connect(self.save_out_preset)
 
     def dirlist_searcher(self):
         self.dirlist = QFileDialog.getExistingDirectory(self, "Выбрать папку", ".")
@@ -211,6 +213,7 @@ class MainWindow(QMainWindow):
         self.comboBox.clear()
         for i in os.listdir("file/prebilds"):
             self.comboBox.addItem(i)
+
     def save_out_preset(self):
         mother_tree = QFileDialog.getExistingDirectory(self, "Выбрать папку", ".")
         print(mother_tree)
