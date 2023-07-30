@@ -4,8 +4,7 @@ import os
 import shutil
 from PyQt5.QtWidgets import *
 from PyQt5 import uic, QtWidgets
-
-
+from zipfile import ZipFile
 
 
 class MainWindow(QMainWindow):
@@ -37,6 +36,8 @@ class MainWindow(QMainWindow):
         self.clear.clicked.connect(self.clear_all)
         for i in os.listdir("file/prebilds"):
             self.comboBox.addItem(i)
+        self.pushButton_8.clicked.connect(self.load_out_preset)
+#        self.pushButton_9.clicked.connect(self.save_out_preset)
 
     def dirlist_searcher(self):
         self.dirlist = QFileDialog.getExistingDirectory(self, "Выбрать папку", ".")
@@ -158,6 +159,7 @@ class MainWindow(QMainWindow):
         self.comboBox.clear()
         for i in os.listdir("file/prebilds"):
             self.comboBox.addItem(i)
+
     def save_preset(self):
         try:
             shutil.rmtree(self.dirlist)
@@ -174,6 +176,7 @@ class MainWindow(QMainWindow):
                 shutil.copytree(f"file/prebilds/{self.comboBox.currentText()}", self.dirlist, dirs_exist_ok=True)
             except BaseException as a:
                 print(a)
+
     def clear_all(self):
         self.asgard_1_treck = ""
         self.asgard_2_treck = ""
@@ -193,6 +196,32 @@ class MainWindow(QMainWindow):
         self.label_13.setText("Пусто")
         self.label_14.setText("Пусто")
         self.label_15.setText("Пусто")
+
+    def load_out_preset(self):
+        mother_tree = QFileDialog.getOpenFileName(
+            self,
+            'Open File', './',
+            'Files (*.zip)')
+        print(mother_tree)
+        try:
+            with ZipFile(mother_tree[0], "r") as myzip:
+                myzip.extractall(path="file/prebilds")
+        except BaseException as a:
+            print(a)
+        self.comboBox.clear()
+        for i in os.listdir("file/prebilds"):
+            self.comboBox.addItem(i)
+    def save_out_preset(self):
+        mother_tree = QFileDialog.getExistingDirectory(self, "Выбрать папку", ".")
+        print(mother_tree)
+        try:
+            with ZipFile(f"{mother_tree[0]}/{self.comboBox.currentText()}", "w") as myzip:
+                myzip.extractall(f"file/prebilds/{self.comboBox.currentText()}")
+        except BaseException as a:
+            print(a)
+        self.comboBox.clear()
+        for i in os.listdir("file/prebilds"):
+            self.comboBox.addItem(i)
 
 
 if __name__ == '__main__':
