@@ -2,8 +2,9 @@ import sys
 import webbrowser
 import os
 import shutil
+import PyQt5
+from PyQt5 import uic
 from PyQt5.QtWidgets import *
-from PyQt5 import uic, QtWidgets
 from zipfile import ZipFile
 
 
