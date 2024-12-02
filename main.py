@@ -3,9 +3,18 @@ import webbrowser
 import os
 import shutil
 import PyQt5
+import librosa.display
 from PyQt5 import uic
 from PyQt5.QtWidgets import *
 from zipfile import ZipFile
+
+
+def render_music(patch_to_file):
+    y, sr = librosa.load(patch_to_file)
+    y_harmonic, y_percussive = librosa.effects.hpss(y)
+    tempo, beat_frames = librosa.beat.beat_track(y=y_percussive, sr=sr, units="time", trim=True)
+    print(tempo)
+    return tempo
 
 
 class MainWindow(QMainWindow):
@@ -31,6 +40,7 @@ class MainWindow(QMainWindow):
         self.Svartalfheim_2.clicked.connect(self.svartalfheim_2)
         self.Helheim_1.clicked.connect(self.helheim_1)
         self.Helheim_2.clicked.connect(self.helheim_2)
+        self.rldcmb.clicked.connect(self.reloaded_comboBox)
         self.pushButton_4.clicked.connect(self.loading_trek)
         self.pushButton_5.clicked.connect(self.save_preset)
         self.pushButton_6.clicked.connect(self.loading_preset)
@@ -42,6 +52,11 @@ class MainWindow(QMainWindow):
 
     #        self.pushButton_9.clicked.connect(self.save_out_preset)
 
+    def reloaded_comboBox(self):
+        self.comboBox.clear()
+        for i in os.listdir("file/prebilds"):
+            self.comboBox.addItem(i)
+
     def dirlist_searcher(self):
         self.dirlist = QFileDialog.getExistingDirectory(self, "Выбрать папку", ".")
         with open("file/settings.txt", "w") as f:
@@ -50,9 +65,6 @@ class MainWindow(QMainWindow):
         # self.lineEdit.text()
         # self.label_4.setText("Папка не выбранна")
         print(self.dirlist)
-
-    def click(self):
-        pass
 
     def asgard_1(self):
         self.asgard_1_treck = QFileDialog.getOpenFileName(
